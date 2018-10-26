@@ -3,6 +3,6 @@ project(native-web-app)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(native-web-app main.cpp)
+add_executable(native-web-app main.cpp net.http.h simple-server.cpp)
 
 target_link_libraries(native-web-app pthread)
