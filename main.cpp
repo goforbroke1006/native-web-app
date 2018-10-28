@@ -25,20 +25,21 @@ int main(int argc, char const *argv[]) {
     int port = std::atoi(argv[2]);
 
     using namespace net;
-
-    auto *router = http::NewRouter();
-
-    router
-            ->Handle("/", [](const http::ResponseWriter *resp, const http::Request req) {
-                // TODO: implement me
-            })
-            ->Handle("/hello/{name}", [](const http::ResponseWriter *resp, const http::Request req) {
-                // TODO: implement me
-            });
-
-    auto *server = http::NewServer(host, port, router);
-
-    server->ListenAndServe();
+    try {
+        auto *router = http::NewServeMux();
+        router
+                ->Handle("/", [](http::ResponseWriter *resp, const http::Request req) {
+                    resp->Write("Index page");
+                })
+                ->Handle("/hello/{name}", [](http::ResponseWriter *resp, const http::Request req) {
+                    resp->Write("Hello, Petya!");
+                });
+        auto *server = http::NewServer(host, port, router);
+        server->ListenAndServe();
+    } catch (http::HttpServerException &ex) {
+        perror(ex.what());
+        exit(EXIT_FAILURE);
+    }
 
     return 0;
 }
