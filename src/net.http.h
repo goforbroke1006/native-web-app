@@ -15,6 +15,7 @@
 #include <netdb.h>
 #include <exception>
 #include <sstream>
+#include <thread>
 
 namespace net {
     namespace http {
@@ -185,6 +186,45 @@ namespace net {
             return new Router;
         }
 
+        Request parseRequest(const std::string &raw) {
+            Request request;
+
+            std::istringstream f(raw);
+
+            std::string statusLine;
+            std::getline(f, statusLine);
+
+            {
+                std::string s;
+                std::istringstream issStatus(statusLine);
+
+                getline(issStatus, s, ' ');
+                request.setMethod(getRequestMethodFromString(s));
+
+                getline(issStatus, s, ' ');
+                request.setPath(s);
+            }
+
+            std::string headerLine;
+            while (std::getline(f, headerLine)) {
+                headerLine = headerLine.substr(0, headerLine.length() - 1);
+
+                unsigned long delimiterPos = headerLine.find(':');
+                const std::string &name = headerLine.substr(0, delimiterPos);
+                std::string values = headerLine.substr(delimiterPos + 1);
+                if (" " == values.substr(0, 1)) {
+                    values = values.substr(1);
+                }
+
+                std::string valLine;
+                std::istringstream issHeaderVals(values);
+                while (std::getline(issHeaderVals, valLine, ',')) {
+                    request.Header()->Add(name, valLine);
+                }
+            }
+            return request;
+        }
+
         class Server {
         private:
             int server_fd;
@@ -199,46 +239,6 @@ namespace net {
                       router(router) {}
 
             friend Server *NewServer(const char *host, const unsigned int &port, Router *router);
-
-            static Request parseRequest(const std::string &raw) {
-                Request request;
-
-                std::istringstream f(raw);
-
-                std::string statusLine;
-                std::getline(f, statusLine);
-
-                {
-                    std::string s;
-                    std::istringstream issStatus(statusLine);
-
-                    getline(issStatus, s, ' ');
-                    request.setMethod(getRequestMethodFromString(s));
-
-                    getline(issStatus, s, ' ');
-                    request.setPath(s);
-                }
-
-                std::string headerLine;
-                while (std::getline(f, headerLine)) {
-                    headerLine = headerLine.substr(0, headerLine.length() - 1);
-                    std::cout << headerLine << std::endl;
-
-                    unsigned long delimiterPos = headerLine.find(':');
-                    const std::string &name = headerLine.substr(0, delimiterPos);
-                    std::string values = headerLine.substr(delimiterPos + 1);
-                    if (" " == values.substr(0, 1)) {
-                        values = values.substr(1);
-                    }
-
-                    std::string valLine;
-                    std::istringstream issHeaderVals(values);
-                    while (std::getline(issHeaderVals, valLine, ',')) {
-                        request.Header()->Add(name, valLine);
-                    }
-                }
-                return request;
-            }
 
             static void processResponse(int new_socket, Router *router) {
                 size_t bs = 2048;
