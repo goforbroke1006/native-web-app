@@ -1,5 +1,9 @@
 language: cpp
 sudo: false
-#script:
-#  - cmake .
-#  - cmake --build .
+script:
+  - mkdir build
+  - cd build
+  - cmake ..
+  - cmake --build .
+  - ctest --output-on-failure
+
