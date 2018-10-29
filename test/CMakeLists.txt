@@ -13,8 +13,6 @@ set(CMAKE_CXX_STANDARD 14)
 #
 #target_link_libraries(testprog gtest pthread)
 
-#enable_testing()
-
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
@@ -26,8 +24,15 @@ target_link_libraries(native-web-app-test
         pthread
         )
 
-add_test(NAME native-web-app-test
-        COMMAND ${CMAKE_COMMAND}
-        -DTEST_PROG=$<TARGET_FILE:native-web-app-test>
-        -DSOURCEDIR=${CMAKE_CURRENT_SOURCE_DIR}
-        -P ${CMAKE_CURRENT_SOURCE_DIR}/runtest.cmake)
+#add_test(
+#        NAME
+#        unit
+#        COMMAND
+#        ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/native-web-app-test
+#)
+add_test(NAME unit COMMAND $<TARGET_FILE:native-web-app-test>)
+
+#add_test(NAME native-web-app-test
+#        COMMAND ${CMAKE_COMMAND}
+#        -DTEST_PROG=$<TARGET_FILE:native-web-app-test>
+#        -DSOURCEDIR=${CMAKE_CURRENT_SOURCE_DIR})

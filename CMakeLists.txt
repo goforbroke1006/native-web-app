@@ -7,4 +7,6 @@ add_executable(native-web-app main.cpp src/net.http.h)
 target_link_libraries(native-web-app pthread)
 
 add_subdirectory(src)
+
+enable_testing()
 add_subdirectory(test)
