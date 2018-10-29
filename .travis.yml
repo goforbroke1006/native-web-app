@@ -1,0 +1,22 @@
+language: cpp
+sudo: false
+os:
+  - linux
+
+script:
+  - mkdir build
+  - cd build
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION -DTARGET_CPU=$TARGET_CPU -DBUILD_TESTS=ON
+  - cmake --build .
+  - ctest --output-on-failure
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-6
+      - g++-6
+      - cmake
+
+
