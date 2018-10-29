@@ -1,0 +1,5 @@
+language: cpp
+install: make get-deps
+script:
+  - cmake .
+  - cmake --build .
