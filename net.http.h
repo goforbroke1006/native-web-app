@@ -177,8 +177,7 @@ namespace net {
                         return r.second;
                     }
                 }
-
-                // TODO: throw 404 exception
+                return nullptr;
             }
         };
 
@@ -199,7 +198,7 @@ namespace net {
                       address(address),
                       router(router) {}
 
-            friend Server *NewServer(const char *host, const int &port, Router *router);
+            friend Server *NewServer(const char *host, const unsigned int &port, Router *router);
 
             static Request parseRequest(const std::string &raw) {
                 Request request;
@@ -238,6 +237,7 @@ namespace net {
                         request.Header()->Add(name, valLine);
                     }
                 }
+                return request;
             }
 
             static void processResponse(int new_socket, Router *router) {
@@ -245,11 +245,15 @@ namespace net {
                 char buffer[bs];
                 ssize_t valread = read(new_socket, buffer, bs);
 
+                if (0 == valread) return;
+
                 std::cout << "Request: " << std::endl;
                 std::cout << buffer << std::endl;
 
                 Request req = parseRequest(buffer);
                 requestHandler func = router->resolve(req.RequestURI());
+                if (nullptr == func)
+                    return; // TODO: throw 404 exception
                 ResponseWriter *w = new ResponseWriter;
                 func(w, req);
 
@@ -280,7 +284,7 @@ namespace net {
             }
         };
 
-        Server *NewServer(const char *host, const int &port, Router *router) {
+        Server *NewServer(const char *host, const unsigned int &port, Router *router) {
             int server_fd;
             struct sockaddr_in address;
 

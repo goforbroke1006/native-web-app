@@ -22,7 +22,7 @@ int main(int argc, char const *argv[]) {
     }
 
     const char *host = argv[1];
-    int port = std::atoi(argv[2]);
+    unsigned int port = static_cast<unsigned int>(std::strtol(argv[2], nullptr, 10));
 
     using namespace net;
     try {
@@ -31,7 +31,7 @@ int main(int argc, char const *argv[]) {
                 ->Handle("/", [](http::ResponseWriter *resp, const http::Request req) {
                     resp->Write("Index page");
                 })
-                ->Handle("/hello/{name}", [](http::ResponseWriter *resp, const http::Request req) {
+                ->Handle("/hello", [](http::ResponseWriter *resp, const http::Request req) {
                     resp->Write("Hello, Petya!");
                 });
         auto *server = http::NewServer(host, port, router);
