@@ -3,11 +3,6 @@ sudo: false
 os:
   - linux
 
-matrix:
-  exclude
-    - os:  osx
-      env: TARGET_CPU=x86 BUILD_CONFIGURATION=Debug
-
 script:
   - mkdir build
   - cd build
