@@ -13,24 +13,24 @@ set(CMAKE_CXX_STANDARD 14)
 #
 #target_link_libraries(testprog gtest pthread)
 
-find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS})
+#find_package(GTest REQUIRED)
+#include_directories(${GTEST_INCLUDE_DIRS})
 
 add_executable(native-web-app-test net.http-test.h main.cpp)
 SET_TARGET_PROPERTIES(native-web-app-test PROPERTIES LINKER_LANGUAGE CXX)
 target_link_libraries(native-web-app-test
         native-web-app-src
-        ${GTEST_LIBRARIES}
+        gtest_main
         pthread
         )
 
-add_test(
-        NAME
-        unit
-        COMMAND
-        ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/native-web-app-test
-)
-#add_test(NAME unit COMMAND $<TARGET_FILE:native-web-app-test>)
+#add_test(
+#        NAME
+#        unit
+#        COMMAND
+#        ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/native-web-app-test
+#)
+add_test(NAME unit COMMAND $<TARGET_FILE:native-web-app-test>)
 
 #add_test(NAME native-web-app-test
 #        COMMAND ${CMAKE_COMMAND}
