@@ -24,13 +24,13 @@ target_link_libraries(native-web-app-test
         pthread
         )
 
-#add_test(
-#        NAME
-#        unit
-#        COMMAND
-#        ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/native-web-app-test
-#)
-add_test(NAME unit COMMAND $<TARGET_FILE:native-web-app-test>)
+add_test(
+        NAME
+        unit
+        COMMAND
+        ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/native-web-app-test
+)
+#add_test(NAME unit COMMAND $<TARGET_FILE:native-web-app-test>)
 
 #add_test(NAME native-web-app-test
 #        COMMAND ${CMAKE_COMMAND}
