@@ -4,7 +4,7 @@ os:
   - linux
 
 script:
-  - sudo apt-get install cmake libgtest-dev
+#  - sudo apt-get install cmake libgtest-dev
   - cmake -H. -Bcmake-build-debug
   - cd cmake-build-debug
   - cmake --build .
