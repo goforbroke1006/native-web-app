@@ -121,7 +121,7 @@ namespace net {
             
             static std::string getUriRegexPatter(std::string rawPattern) {
                 const std::regex re("[\\{]{1}[\\w]+[\\}]{1}");
-                return regex_replace(rawPattern, re, "([\\w]+)");
+                return regex_replace(rawPattern, re, std::string("([\\w]+)"));
             }
         };
 
