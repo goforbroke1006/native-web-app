@@ -16,6 +16,7 @@
 #include <exception>
 #include <sstream>
 #include <thread>
+#include <regex>
 
 namespace net {
     namespace http {
@@ -116,6 +117,11 @@ namespace net {
 
             void setHeader(http::HttpHeader *header) {
                 Request::header = header;
+            }
+            
+            static std::string getUriRegexPatter(std::string rawPattern) {
+                const std::regex re("[\\{]{1}[\\w]+[\\}]{1}");
+                return regex_replace(rawPattern, re, "([\\w]+)");
             }
         };
 
