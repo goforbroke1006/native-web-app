@@ -20,4 +20,11 @@ TEST(net_http_Server_parseRequest, positive) {
     ASSERT_EQ("www.wildfowl.org", req.Header()->Get("Host"));
 }
 
+TEST() {
+    ASSERT_EQ("/some/fantastic/[\\{]{1}[\\w]+[\\}]{1}/profile", http::Request::getUriRegexPatter("/some/fantastic/{username}/profile"));
+    ASSERT_EQ("/", http::Request::getUriRegexPatter("/"));
+    //ASSERT_EQ("/", http::Request::getUriRegexPatter());
+    //ASSERT_EQ("/", http::Request::getUriRegexPatter());
+}
+
 #endif //NET_HTTP_TEST_H
