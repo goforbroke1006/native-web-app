@@ -16,7 +16,10 @@ set(CMAKE_CXX_STANDARD 14)
 #find_package(GTest REQUIRED)
 #include_directories(${GTEST_INCLUDE_DIRS})
 
-add_executable(native-web-app-test net.http-test.h main.cpp)
+add_executable(native-web-app-test
+        ../src/Request.h
+        net.http-test.h
+        main.cpp)
 SET_TARGET_PROPERTIES(native-web-app-test PROPERTIES LINKER_LANGUAGE CXX)
 target_link_libraries(native-web-app-test
         native-web-app-src

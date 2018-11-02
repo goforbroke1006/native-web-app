@@ -31,7 +31,7 @@ int main(int argc, char const *argv[]) {
                 ->Handle("/", [](http::ResponseWriter *resp, const http::Request req) {
                     resp->Write("Index page");
                 })
-                ->Handle("/hello", [](http::ResponseWriter *resp, const http::Request req) {
+                ->Handle("/hello/{name}", [](http::ResponseWriter *resp, const http::Request req) {
                     resp->Write("Hello, Petya!");
                 });
         auto *server = http::NewServer(host, port, router);

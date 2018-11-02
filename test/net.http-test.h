@@ -3,6 +3,7 @@
 
 #include <gtest/gtest.h>
 #include "../src/net.http.h"
+#include "../src/Request.h"
 
 using namespace net;
 
@@ -20,10 +21,10 @@ TEST(net_http_Server_parseRequest, positive) {
     ASSERT_EQ("www.wildfowl.org", req.Header()->Get("Host"));
 }
 
-TEST() {
-    ASSERT_EQ("/some/fantastic/[\\{]{1}[\\w]+[\\}]{1}/profile", http::Request::getUriRegexPatter("/some/fantastic/{username}/profile"));
-    ASSERT_EQ("/", http::Request::getUriRegexPatter("/"));
-    //ASSERT_EQ("/", http::Request::getUriRegexPatter());
+TEST(net_http_Router__getUriRegexPatter, positive) {
+    ASSERT_EQ("/some/fantastic/([\\w]+)/profile", http::Router::getUriRegexPatter("/some/fantastic/{username}/profile"));
+    ASSERT_EQ("/", http::Router::getUriRegexPatter("/"));
+    ASSERT_EQ("/some/url/id-([\\w]+)", http::Router::getUriRegexPatter("/some/url/id-{someId}"));
     //ASSERT_EQ("/", http::Request::getUriRegexPatter());
 }
 
