@@ -34,7 +34,7 @@ void Request::setHeader(net::http::HttpHeader *header) {
     this->header = header;
 }
 
-RequestMethod Request::sgetRequestMethodFromString(const std::string &val) {
+RequestMethod Request::getRequestMethodFromString(const std::string &val) {
     if ("GET" == val) return RequestMethod::GET;
     if ("POST" == val) return RequestMethod::POST;
     if ("PUT" == val) return RequestMethod::PUT;
