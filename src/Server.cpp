@@ -30,7 +30,7 @@ void Server::processResponse(int new_socket, Router *router) {
     close(new_socket);
 }
 
-Server *net::http::NewServer(const char *host, const unsigned int &port, Router *router) {
+Server *net::http::NewServer(const std::string &host, const unsigned int &port, Router *router) {
     int server_fd;
     struct sockaddr_in address;
 
@@ -42,7 +42,7 @@ Server *net::http::NewServer(const char *host, const unsigned int &port, Router 
         throw HttpServerException("setsockopt");
     }
     address.sin_family = AF_INET;
-    address.sin_addr.s_addr = ((in_addr *) (gethostbyname(host)->h_addr_list[0]))->s_addr;
+    address.sin_addr.s_addr = ((in_addr *) (gethostbyname(host.c_str())->h_addr_list[0]))->s_addr;
     address.sin_port = htons(port);
 
     if (bind(server_fd, (struct sockaddr *) &address, sizeof(address)) < 0) {

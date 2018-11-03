@@ -22,7 +22,7 @@ namespace net {
             HttpHeader *header;
 
         public:
-            Request();
+            explicit Request() noexcept;
 
             Request(
                     RequestMethod method,
@@ -46,6 +46,10 @@ namespace net {
         };
 
         RequestMethod getRequestMethodFromString(const std::string &val);
+
+        void parseHttpStatusLine(Request &request, const std::string &statusLine);
+
+        void parseHttpHeadersLines(Request &request, std::istringstream &f);
 
         Request parseRequest(const std::string &raw);
 

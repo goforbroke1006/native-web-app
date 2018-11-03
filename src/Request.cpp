@@ -6,7 +6,7 @@
 
 using namespace net::http;
 
-Request::Request() {
+Request::Request() noexcept {
     header = new HttpHeader;
 }
 
@@ -42,42 +42,50 @@ RequestMethod net::http::getRequestMethodFromString(const std::string &val) {
     if ("HEAD" == val) return RequestMethod::HEAD;
 }
 
+void net::http::parseHttpStatusLine(Request &request, const std::string &statusLine) {
+    std::__cxx11::string s;
+    std::istringstream issStatus(statusLine);
+
+    getline(issStatus, s, ' ');
+    request.setMethod(getRequestMethodFromString(s));
+
+    getline(issStatus, s, ' ');
+    request.setPath(s);
+}
+
+void net::http::parseHttpHeadersLines(Request &request, std::istringstream &f) {
+    std::string headerLine;
+    unsigned long delimiterPos;
+    std::string values;
+    std::string valLine;
+
+    while (getline(f, headerLine)) {
+        headerLine = headerLine.substr(0, headerLine.length() - 1);
+
+        if (headerLine.empty()) // headers finished, start body
+            return;
+
+        delimiterPos = headerLine.find(':');
+        const std::string &name = headerLine.substr(0, delimiterPos);
+        values = headerLine.substr(delimiterPos + 1);
+        if (" " == values.substr(0, 1))
+            values = values.substr(1);
+
+        std::istringstream issHeaderVals(values);
+        while (getline(issHeaderVals, valLine, ','))
+            request.Header()->Add(name, valLine);
+    }
+}
+
 Request net::http::parseRequest(const std::string &raw) {
     Request request;
-
 
     std::istringstream f(raw);
 
     std::string statusLine;
     std::getline(f, statusLine);
+    parseHttpStatusLine(request, statusLine);
 
-    {
-        std::string s;
-        std::istringstream issStatus(statusLine);
-
-        getline(issStatus, s, ' ');
-        request.setMethod(getRequestMethodFromString(s));
-
-        getline(issStatus, s, ' ');
-        request.setPath(s);
-    }
-
-    std::string headerLine;
-    while (std::getline(f, headerLine)) {
-        headerLine = headerLine.substr(0, headerLine.length() - 1);
-
-        unsigned long delimiterPos = headerLine.find(':');
-        const std::string &name = headerLine.substr(0, delimiterPos);
-        std::string values = headerLine.substr(delimiterPos + 1);
-        if (" " == values.substr(0, 1)) {
-            values = values.substr(1);
-        }
-
-        std::string valLine;
-        std::istringstream issHeaderVals(values);
-        while (std::getline(issHeaderVals, valLine, ',')) {
-            request.Header()->Add(name, valLine);
-        }
-    }
+    parseHttpHeadersLines(request, f);
     return request;
 }

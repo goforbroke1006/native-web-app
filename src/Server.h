@@ -32,7 +32,7 @@ namespace net {
             static void processResponse(int new_socket, Router *router);
 
         public:
-            friend Server *NewServer(const char *host, const unsigned int &port, Router *router);
+            friend Server *NewServer(const std::string &host, const unsigned int &port, Router *router);
 
             void ListenAndServe() {
                 if (listen(server_fd, 3) < 0) {
@@ -53,7 +53,7 @@ namespace net {
             }
         };
 
-        Server *NewServer(const char *host, const unsigned int &port, Router *router);
+        Server *NewServer(const std::string &host, const unsigned int &port, Router *router);
     }
 }
 

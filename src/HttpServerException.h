@@ -15,7 +15,8 @@ namespace net {
         private:
             std::string message;
         public:
-            HttpServerException(std::string message) : message(std::move(message)) {}
+            explicit HttpServerException(std::string message)
+                    : message(std::move(message)) {}
 
             const char *what() const throw() override {
                 return message.c_str();
