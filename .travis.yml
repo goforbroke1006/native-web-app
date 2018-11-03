@@ -3,10 +3,9 @@ sudo: false
 os:
 - linux
 
-install: make get-deps
-compiler:
-- clang
-- gcc
+#compiler:
+#- clang
+#- gcc
 
 matrix:
   include:
