@@ -7,8 +7,6 @@
 
 #include <cstddef>
 
-static const size_t BUFFER_SIZE = 2048;
-
 #include <unistd.h>
 #include <netinet/in.h>
 #include <netdb.h>
@@ -22,6 +20,8 @@ namespace net {
     namespace http {
         class Server {
         private:
+            static const size_t BUFFER_SIZE = 2048;
+
             int server_fd;
             struct sockaddr_in address;
             net::http::Router *router;

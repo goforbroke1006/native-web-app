@@ -5,9 +5,6 @@
 #ifndef NATIVE_WEB_APP_RESPONSEWRITER_H
 #define NATIVE_WEB_APP_RESPONSEWRITER_H
 
-
-static const int BUFFER_SIZE = 1024;
-
 #include <string>
 #include "HttpHeader.h"
 
@@ -15,6 +12,8 @@ namespace net {
     namespace http {
         class ResponseWriter {
         private:
+            static const int BUFFER_SIZE = 1024;
+
             unsigned int statusCode;
             std::string body;
         public:
