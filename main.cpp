@@ -10,7 +10,9 @@
 #include <netdb.h>
 #include <functional>
 #include <thread>
-#include "src/net.http.h"
+
+#include "src/Router.h"
+#include "src/Server.h"
 
 int main(int argc, char const *argv[]) {
     if (argc != 3) {
