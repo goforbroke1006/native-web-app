@@ -56,12 +56,12 @@ matrix:
 before_install:
 - eval "${MATRIX_EVAL}"
 
-#script:
+script:
 #  - sudo apt-get install cmake libgtest-dev
-#  - cmake -H. -Bcmake-build-debug
-#  - cd cmake-build-debug
-#  - cmake --build .
-#  - ./test/native-web-app-test
+  - cmake -H. -Bcmake-build-debug
+  - cd cmake-build-debug
+  - cmake --build .
+  - ./test/native-web-app-test
 #  - ctest --output-on-failure
 
 #addons:
