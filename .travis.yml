@@ -11,13 +11,13 @@ script:
   - ./test/native-web-app-test
 #  - ctest --output-on-failure
 
-#addons:
-#  apt:
-#    sources:
-#      - ubuntu-toolchain-r-test
-#    packages:
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
 #      - gcc-6
-#      - g++-6
-#      - cmake
+      - g++-6
+      - cmake
 
 
