@@ -10,8 +10,8 @@ net::http::Router *net::http::Router::Handle(const char *path, net::http::reques
 }
 
 std::string net::http::Router::getUriRegexPatter(std::string rawPattern) {
-    const std::regex re("[\\{]{1}[\\w]+[\\}]{1}");
-    return regex_replace(rawPattern, re, std::string("([\\w]+)"));
+    const std::regex re(R"([\{]{1}[\w]+[\}]{1})");
+    return regex_replace(rawPattern, re, std::string(R"(([\w]+))"));
 }
 
 net::http::requestHandler net::http::Router::resolve(const std::string &path) {
