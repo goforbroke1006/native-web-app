@@ -6,34 +6,25 @@
 
 net::http::HttpHeader *net::http::ResponseWriter::Header() { return nullptr; }
 
-void net::http::ResponseWriter::Write(std::string data) {
+void net::http::ResponseWriter::Write(std::string &data) {
     body = data;
 }
 
 void net::http::ResponseWriter::WriteHeader(unsigned int statusCode) { this->statusCode = statusCode; }
 
 std::string net::http::ResponseWriter::flush() {
-    time_t timer = time(0);
-    char *dt = ctime(&timer);
-
-    char buf1[1024];
+    char buf1[BUFFER_SIZE];
     sprintf(
             buf1,
             "HTTP/1.1 %d OK\r\n"
             "Content-Type: text/html; charset=utf-8\r\n"
-            "Server: Wildfowl\r\n"
-            "X-Powered-By: GFB\r\n"
             "Connection: close\r\n"
-            "Content-Type: text/html\r\n"
-            "Content-Length: %zu\r\n"
-            "Cache-Control : no-cache, private\r\n"
-            "Date : %s\r\n",
+            "Content-Length: %zu\r\n",
             this->statusCode,
-            this->body.length(),
-            dt
+            this->body.length()
     );
 
-    std::string rawData = "";
+    std::string rawData;
     rawData += buf1;
     rawData += this->body;
 

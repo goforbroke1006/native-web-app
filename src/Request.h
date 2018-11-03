@@ -49,6 +49,8 @@ namespace net {
 
         void parseHttpStatusLine(Request &request, const std::string &statusLine);
 
+        void parseHeaderLine(Request &request, const std::string &headerLine);
+
         void parseHttpHeadersLines(Request &request, std::istringstream &f);
 
         Request parseRequest(const std::string &raw);

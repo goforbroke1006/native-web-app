@@ -14,21 +14,28 @@
 #include "src/Router.h"
 #include "src/Server.h"
 
+using namespace net;
+
+void indexHandler(http::ResponseWriter *resp, const http::Request &req) {
+    std::string content = "Index page";
+    resp->Write(content);
+}
+
+void greatingHandler(http::ResponseWriter *resp, const http::Request &req) {
+    std::string content = "Hello, Petya!";
+    resp->Write(content);
+}
+
 int handle(std::string &host, unsigned int port) {
-    using namespace net;
     try {
         auto *router = http::NewServeMux();
         router
-                ->Handle("/", [](http::ResponseWriter *resp, const http::Request req) {
-                    resp->Write("Index page");
-                })
-                ->Handle("/hello/{name}", [](http::ResponseWriter *resp, const http::Request req) {
-                    resp->Write("Hello, Petya!");
-                });
+                ->Handle("/", indexHandler)
+                ->Handle("/hello/{name}", greatingHandler);
         auto *server = http::NewServer(host, port, router);
         server->ListenAndServe();
     } catch (http::HttpServerException &ex) {
-        perror(ex.what());
+        std::cerr << ex.what();
         exit(EXIT_FAILURE);
     }
 }
@@ -42,7 +49,7 @@ int main(int argc, char const *argv[]) {
         return EXIT_FAILURE;
     }
 
-    std::string host =  argv[1];
+    std::string host = argv[1];
     auto port = static_cast<unsigned int>(std::strtol(argv[2], nullptr, 10));
 
     handle(host, port);

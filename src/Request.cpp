@@ -53,27 +53,26 @@ void net::http::parseHttpStatusLine(Request &request, const std::string &statusL
     request.setPath(s);
 }
 
+void net::http::parseHeaderLine(Request &request, const std::string &headerLine) {
+    unsigned long delimiterPos = headerLine.find(':');
+    const std::__cxx11::string &name = headerLine.substr(0, delimiterPos);
+    std::__cxx11::string values = headerLine.substr(delimiterPos + 1);
+    if (" " == values.substr(0, 1))
+        values = values.substr(1);
+
+    std::istringstream issHeaderVals(values);
+    std::string valLine;
+    while (getline(issHeaderVals, valLine, ','))
+        request.Header()->Add(name, valLine);
+}
+
 void net::http::parseHttpHeadersLines(Request &request, std::istringstream &f) {
     std::string headerLine;
-    unsigned long delimiterPos;
-    std::string values;
-    std::string valLine;
-
     while (getline(f, headerLine)) {
         headerLine = headerLine.substr(0, headerLine.length() - 1);
-
         if (headerLine.empty()) // headers finished, start body
             return;
-
-        delimiterPos = headerLine.find(':');
-        const std::string &name = headerLine.substr(0, delimiterPos);
-        values = headerLine.substr(delimiterPos + 1);
-        if (" " == values.substr(0, 1))
-            values = values.substr(1);
-
-        std::istringstream issHeaderVals(values);
-        while (getline(issHeaderVals, valLine, ','))
-            request.Header()->Add(name, valLine);
+        parseHeaderLine(request, headerLine);
     }
 }
 

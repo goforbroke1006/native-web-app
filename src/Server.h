@@ -5,6 +5,10 @@
 #ifndef NATIVE_WEB_APP_SERVER_H
 #define NATIVE_WEB_APP_SERVER_H
 
+#include <cstddef>
+
+static const size_t BUFFER_SIZE = 2048;
+
 #include <unistd.h>
 #include <netinet/in.h>
 #include <netdb.h>
@@ -34,23 +38,7 @@ namespace net {
         public:
             friend Server *NewServer(const std::string &host, const unsigned int &port, Router *router);
 
-            void ListenAndServe() {
-                if (listen(server_fd, 3) < 0) {
-                    throw HttpServerException("listen problem");
-                }
-
-                int addrlen = sizeof(address);
-                int new_socket;
-                while (true) {
-                    if ((new_socket = accept(server_fd, (struct sockaddr *) &address, (socklen_t *) &addrlen)) < 0) {
-                        perror("accept");
-                        continue;
-                    }
-                    std::thread{
-                            std::bind(processResponse, new_socket, this->router)
-                    }.detach();
-                }
-            }
+            void ListenAndServe();
         };
 
         Server *NewServer(const std::string &host, const unsigned int &port, Router *router);

@@ -6,6 +6,8 @@
 #define NATIVE_WEB_APP_RESPONSEWRITER_H
 
 
+static const int BUFFER_SIZE = 1024;
+
 #include <string>
 #include "HttpHeader.h"
 
@@ -18,7 +20,7 @@ namespace net {
         public:
             HttpHeader *Header();
 
-            void Write(std::string data);
+            void Write(std::string &data);
 
             void WriteHeader(unsigned int statusCode);
 

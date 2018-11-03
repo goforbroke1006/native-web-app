@@ -16,7 +16,7 @@
 namespace net {
     namespace http {
 
-        typedef void(*requestHandler)(ResponseWriter *, Request);
+        typedef void(*requestHandler)(ResponseWriter *, const Request &);
 
         class Router {
         private:
