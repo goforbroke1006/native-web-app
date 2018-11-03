@@ -34,7 +34,7 @@ void Request::setHeader(net::http::HttpHeader *header) {
     this->header = header;
 }
 
-RequestMethod net::http::getRequestMethodFromString(const std::string &val) {
+RequestMethod Request::sgetRequestMethodFromString(const std::string &val) {
     if ("GET" == val) return RequestMethod::GET;
     if ("POST" == val) return RequestMethod::POST;
     if ("PUT" == val) return RequestMethod::PUT;
@@ -42,7 +42,10 @@ RequestMethod net::http::getRequestMethodFromString(const std::string &val) {
     if ("HEAD" == val) return RequestMethod::HEAD;
 }
 
-void net::http::parseHttpStatusLine(Request &request, const std::string &statusLine) {
+void Request::parseHttpStatusLine(Request &request, std::istringstream &f) {
+    std::string statusLine;
+    std::getline(f, statusLine);
+
     std::string s;
     std::istringstream issStatus(statusLine);
 
@@ -53,7 +56,7 @@ void net::http::parseHttpStatusLine(Request &request, const std::string &statusL
     request.setPath(s);
 }
 
-void net::http::parseHeaderLine(Request &request, const std::string &headerLine) {
+void Request::parseHeaderLine(Request &request, const std::string &headerLine) {
     unsigned long delimiterPos = headerLine.find(':');
     const std::string &name = headerLine.substr(0, delimiterPos);
     std::string values = headerLine.substr(delimiterPos + 1);
@@ -66,7 +69,7 @@ void net::http::parseHeaderLine(Request &request, const std::string &headerLine)
         request.Header()->Add(name, valLine);
 }
 
-void net::http::parseHttpHeadersLines(Request &request, std::istringstream &f) {
+void Request::parseHttpHeadersLines(Request &request, std::istringstream &f) {
     std::string headerLine;
     while (getline(f, headerLine)) {
         headerLine = headerLine.substr(0, headerLine.length() - 1);
@@ -78,13 +81,8 @@ void net::http::parseHttpHeadersLines(Request &request, std::istringstream &f) {
 
 Request net::http::parseRequest(const std::string &raw) {
     Request request;
-
     std::istringstream f(raw);
-
-    std::string statusLine;
-    std::getline(f, statusLine);
-    parseHttpStatusLine(request, statusLine);
-
-    parseHttpHeadersLines(request, f);
+    Request::parseHttpStatusLine(request, f);
+    Request::parseHttpHeadersLines(request, f);
     return request;
 }

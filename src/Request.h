@@ -28,9 +28,10 @@ namespace net {
                     RequestMethod method,
                     std::string &path,
                     http::HttpHeader *header
-            ) : method(method),
-                path(std::move(path)),
-                header(header) {}
+            ) noexcept
+                    : method(method),
+                      path(std::move(path)),
+                      header(header) {}
 
             HttpHeader *Header();
 
@@ -43,15 +44,15 @@ namespace net {
             void setPath(const std::string &path);
 
             void setHeader(http::HttpHeader *header);
+
+            static RequestMethod getRequestMethodFromString(const std::string &val);
+
+            static void parseHttpStatusLine(Request &request, std::istringstream &f);
+
+            static void parseHeaderLine(Request &request, const std::string &headerLine);
+
+            static void parseHttpHeadersLines(Request &request, std::istringstream &f);
         };
-
-        RequestMethod getRequestMethodFromString(const std::string &val);
-
-        void parseHttpStatusLine(Request &request, const std::string &statusLine);
-
-        void parseHeaderLine(Request &request, const std::string &headerLine);
-
-        void parseHttpHeadersLines(Request &request, std::istringstream &f);
 
         Request parseRequest(const std::string &raw);
 

@@ -8,7 +8,7 @@
 using namespace net;
 
 TEST(net_http_getRequestMethodFromString, positive) {
-    http::RequestMethod rm = http::getRequestMethodFromString("GET");
+    http::RequestMethod rm = http::Request::getRequestMethodFromString("GET");
     ASSERT_EQ(http::RequestMethod::GET, rm);
 }
 

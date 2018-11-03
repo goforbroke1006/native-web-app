@@ -21,7 +21,7 @@ void indexHandler(http::ResponseWriter *resp, const http::Request &req) {
     resp->Write(content);
 }
 
-void greatingHandler(http::ResponseWriter *resp, const http::Request &req) {
+void greetingHandler(http::ResponseWriter *resp, const http::Request &req) {
     std::string content = "Hello, Petya!";
     resp->Write(content);
 }
@@ -31,7 +31,7 @@ int handle(std::string &host, unsigned int port) {
         auto *router = http::NewServeMux();
         router
                 ->Handle("/", indexHandler)
-                ->Handle("/hello/{name}", greatingHandler);
+                ->Handle("/hello/{name}", greetingHandler);
         auto *server = http::NewServer(host, port, router);
         server->ListenAndServe();
     } catch (http::HttpServerException &ex) {
