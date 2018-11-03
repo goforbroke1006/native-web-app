@@ -43,7 +43,7 @@ RequestMethod net::http::getRequestMethodFromString(const std::string &val) {
 }
 
 void net::http::parseHttpStatusLine(Request &request, const std::string &statusLine) {
-    std::__cxx11::string s;
+    std::string s;
     std::istringstream issStatus(statusLine);
 
     getline(issStatus, s, ' ');
@@ -55,8 +55,8 @@ void net::http::parseHttpStatusLine(Request &request, const std::string &statusL
 
 void net::http::parseHeaderLine(Request &request, const std::string &headerLine) {
     unsigned long delimiterPos = headerLine.find(':');
-    const std::__cxx11::string &name = headerLine.substr(0, delimiterPos);
-    std::__cxx11::string values = headerLine.substr(delimiterPos + 1);
+    const std::string &name = headerLine.substr(0, delimiterPos);
+    std::string values = headerLine.substr(delimiterPos + 1);
     if (" " == values.substr(0, 1))
         values = values.substr(1);
 
