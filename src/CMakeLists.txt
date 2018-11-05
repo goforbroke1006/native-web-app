@@ -3,6 +3,7 @@ SET_TARGET_PROPERTIES(native-web-app-src PROPERTIES LINKER_LANGUAGE CXX)
 target_sources(
         native-web-app-src
         PUBLIC
+        ${CMAKE_CURRENT_LIST_DIR}/filesystem.h
         ${CMAKE_CURRENT_LIST_DIR}/net/http/common.cpp
         ${CMAKE_CURRENT_LIST_DIR}/net/http/common.h
         ${CMAKE_CURRENT_LIST_DIR}/net/mux/common.cpp
