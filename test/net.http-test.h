@@ -26,6 +26,8 @@ TEST(net_http_Router__getUriRegexPatter, positive) {
     ASSERT_EQ("/some/fantastic/([\\w]+)/profile", http::getUriRegexPatter("/some/fantastic/{username}/profile"));
     ASSERT_EQ("/", http::getUriRegexPatter("/"));
     ASSERT_EQ("/some/url/id-([\\w]+)", http::getUriRegexPatter("/some/url/id-{someId}"));
+
+//    ASSERT_EQ("/some/url/id-([\\d+])", http::getUriRegexPatter("/some/url/id-{someId:\\d+}")); // TODO: realize it
 }
 
 
