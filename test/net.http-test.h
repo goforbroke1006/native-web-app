@@ -30,6 +30,24 @@ TEST(net_http_Router__getUriRegexPatter, positive) {
 //    ASSERT_EQ("/some/url/id-([\\d+])", http::getUriRegexPatter("/some/url/id-{someId:\\d+}")); // TODO: realize it
 }
 
+TEST(net_http_Server_parseRequest, positive3) {
+    http::Request req = http::parseRequest(
+            "POST /qwertyuiop HTTP/1.1\r\n"
+            "Host: foo.com\r\n"
+            "Content-Type: application/x-www-form-urlencoded\r\n"
+            "Content-Length: 13\r\n"
+            "\r\n"
+            "say=Hi&to=Mom"
+    );
+    ASSERT_EQ(http::RequestMethod::POST, req.Method());
+    ASSERT_EQ("/qwertyuiop", req.RequestURI());
+    ASSERT_EQ("application/x-www-form-urlencoded", req.Header().Get("Content-Type"));
+
+    req.ParseForm();
+
+    ASSERT_EQ("Hi", req.Form().at("say"));
+}
+
 
 
 #endif //NET_HTTP_TEST_H

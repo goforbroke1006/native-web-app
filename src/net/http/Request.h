@@ -46,6 +46,10 @@ namespace net {
 
             HttpHeader &Header();
 
+            void ParseForm();
+
+            map<string, string> Form();
+
             void setMethod(const RequestMethod &method);
 
             void setPath(const string &path);

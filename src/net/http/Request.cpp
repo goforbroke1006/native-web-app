@@ -26,6 +26,16 @@ HttpHeader &Request::Header() {
     return header;
 }
 
+void Request::ParseForm() {
+    // TODO:
+}
+
+map<string, string> Request::Form() {
+    map<string, string> form;
+    // TODO: realize parameters parsing
+    return form;
+}
+
 void Request::setMethod(const RequestMethod &method) {
     this->method = method;
 }
