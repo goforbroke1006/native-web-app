@@ -23,8 +23,8 @@ environment:
   - TOOLCHAIN: msvc12
   - TOOLCHAIN: msvc14
 
-install:
-- call ci\appveyor\set-env.bat %TOOLCHAIN% %PLATFORM%
+#install:
+#- call ci\appveyor\set-env.bat %TOOLCHAIN% %PLATFORM%
 #- appveyor DownloadFile <url> -FileName <local-file>
 #- 7z e -y <local-file> -o<local-dir>
 
@@ -37,9 +37,9 @@ build_script:
 test_script:
 - ctest -C %CONFIGURATION% --output-on-failure
 
-artifacts:
-- path: <local-package-path>
-  name: package_name
+#artifacts:
+#- path: <local-package-path>
+#  name: package_name
 
 #deploy:
 #  description: '$(APPVEYOR_REPO_TAG_NAME)'
