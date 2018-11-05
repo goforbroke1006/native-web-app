@@ -23,10 +23,9 @@ TEST(net_http_Server_parseRequest, positive) {
 }
 
 TEST(net_http_Router__getUriRegexPatter, positive) {
-    ASSERT_EQ("/some/fantastic/([\\w]+)/profile", getUriRegexPatter("/some/fantastic/{username}/profile"));
-    ASSERT_EQ("/", getUriRegexPatter("/"));
-    ASSERT_EQ("/some/url/id-([\\w]+)", getUriRegexPatter("/some/url/id-{someId}"));
-    //ASSERT_EQ("/", http::Request::getUriRegexPatter());
+    ASSERT_EQ("/some/fantastic/([\\w]+)/profile", http::getUriRegexPatter("/some/fantastic/{username}/profile"));
+    ASSERT_EQ("/", http::getUriRegexPatter("/"));
+    ASSERT_EQ("/some/url/id-([\\w]+)", http::getUriRegexPatter("/some/url/id-{someId}"));
 }
 
 

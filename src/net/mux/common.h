@@ -7,7 +7,6 @@
 #include <map>
 #include <string>
 
-#include "net/http/common.h"
 #include "net/http/Request.h"
 
 namespace net {
@@ -15,6 +14,10 @@ namespace net {
 
         using namespace std;
         using namespace net;
+
+        vector<string> getVarNames(const string &UriPattern);
+
+        vector<string> getVarValues(const string &UriPattern, const string &uri);
 
         map<string, string> Vars(const http::Request &req);
     }

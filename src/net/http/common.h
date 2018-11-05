@@ -9,15 +9,15 @@
 #include <regex>
 
 namespace net {
+namespace http {
 
     using namespace std;
 
     string getUriRegexPatter(const string &rawPattern);
 
-    vector<string> getVarNames(const string &UriPattern);
 
-    vector<string> getVarValues(const string &UriPattern, const string &uri);
 
+}
 }
 
 #endif //NATIVE_WEB_APP_COMMON_H

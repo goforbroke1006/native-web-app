@@ -17,8 +17,6 @@
 namespace net {
     namespace http {
 
-//        std::string getUriRegexPatter(std::string rawPattern);
-
         typedef void(*RequestHandlerFunc)(ResponseWriter *, const Request &);
 
         class Router {
@@ -26,8 +24,6 @@ namespace net {
             std::map<std::string, RequestHandlerFunc> routingList;
         public:
             Router *Handle(const std::string &path, RequestHandlerFunc func);
-
-//            static std::string getUriRegexPatter(std::string rawPattern);
 
             RequestHandlerFunc resolve(const std::string &path, Request &req);
         };
