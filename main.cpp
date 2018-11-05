@@ -10,28 +10,40 @@
 #include <netdb.h>
 #include <functional>
 #include <thread>
+#include <net/mux/common.h>
 
-#include "src/Router.h"
-#include "src/Server.h"
+#include "net/http/Router.h"
+#include "net/http/Server.h"
 
+using namespace std;
 using namespace net;
 
 void indexHandler(http::ResponseWriter *resp, const http::Request &req) {
-    std::string content = "Index page";
+    string content = "Index page";
     resp->Write(content);
 }
 
 void greetingHandler(http::ResponseWriter *resp, const http::Request &req) {
-    std::string content = "Hello, Petya!";
+    const map<string, string> &vars = mux::Vars(req);
+    string content = "Hello, " + vars.at("name") + "!";
     resp->Write(content);
 }
 
-int handle(std::string &host, unsigned int port) {
+void greetAndMessageHandler(http::ResponseWriter *resp, const http::Request &req) {
+    const map<string, string> &vars = mux::Vars(req);
+    string content = "Hello, " + vars.at("name") + "!";
+    content += "<br/>";
+    content += "Message: " + vars.at("message");
+    resp->Write(content);
+}
+
+int handle(string &host, unsigned int port) {
     try {
         auto *router = http::NewServeMux();
         router
                 ->Handle("/", indexHandler)
-                ->Handle("/hello/{name}", greetingHandler);
+                ->Handle("/hello/{name}", greetingHandler)
+                ->Handle("/hello/{name}/{message}", greetAndMessageHandler);
         auto *server = http::NewServer(host, port, router);
         server->ListenAndServe();
     } catch (http::HttpServerException &ex) {
@@ -49,8 +61,8 @@ int main(int argc, char const *argv[]) {
         return EXIT_FAILURE;
     }
 
-    std::string host = argv[1];
-    auto port = static_cast<unsigned int>(std::strtol(argv[2], nullptr, 10));
+    string host = argv[1];
+    auto port = static_cast<unsigned int>(strtol(argv[2], nullptr, 10));
 
     handle(host, port);
 

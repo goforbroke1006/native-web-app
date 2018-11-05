@@ -5,8 +5,8 @@
 #ifndef NATIVE_WEB_APP_SERVER_H
 #define NATIVE_WEB_APP_SERVER_H
 
-#include <cstddef>
 
+#include <cstddef>
 #include <unistd.h>
 #include <netinet/in.h>
 #include <netdb.h>
@@ -14,7 +14,7 @@
 #include <functional>
 
 #include "Router.h"
-#include "HttpServerException.h"
+#include "net/http/HttpServerException.h"
 
 namespace net {
     namespace http {

@@ -3,30 +3,34 @@
 //
 
 #include <iostream>
+
 #include "Server.h"
 
 using namespace net::http;
 
 void Server::processResponse(int new_socket, Router *router) {
     char buffer[BUFFER_SIZE];
-    ssize_t valread = read(new_socket, buffer, BUFFER_SIZE);
-    if (0 == valread) return;
+    ssize_t valRead = read(new_socket, buffer, BUFFER_SIZE);
+    if (0 == valRead) return;
 
     Request req = parseRequest(buffer);
-    requestHandler func = router->resolve(req.RequestURI());
-    if (nullptr == func)
-        return; // TODO: throw 404 exception
+    RequestHandlerFunc func = router->resolve(req.RequestURI(), req);
+    if (nullptr == func) return; // TODO: 404
     auto *w = new ResponseWriter;
+    w->WriteHeader(200);
     func(w, req);
 
     std::string msg = w->flush();
     send(new_socket, msg.c_str(), msg.length(), 0);
 
-    valread = read(new_socket, buffer, BUFFER_SIZE);
+    valRead = read(new_socket, buffer, BUFFER_SIZE);
     close(new_socket);
 }
 
-Server *net::http::NewServer(const std::string &host, const unsigned int &port, Router *router) {
+Server *net::http::NewServer(
+        const std::string &host,
+        const unsigned int &port, Router *router
+) {
     int server_fd;
     struct sockaddr_in address;
 

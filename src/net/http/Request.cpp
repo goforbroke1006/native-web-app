@@ -3,26 +3,30 @@
 //
 
 #include "Request.h"
+#include "net/http/HttpServerException.h"
 
+using namespace std;
 using namespace net::http;
 
 Request::Request() noexcept {
-    header = new HttpHeader;
+    method = RequestMethod::GET;
+    path = DEFAULT_URI;
+    header = HttpHeader();
 }
 
-HttpHeader *Request::Header() {
-    return header;
-}
-
-RequestMethod Request::Method() {
+RequestMethod Request::Method() const {
     return method;
 }
 
-std::string Request::RequestURI() {
+const string &Request::RequestURI() const {
     return path;
 }
 
-void Request::setMethod(net::http::RequestMethod method) {
+HttpHeader &Request::Header() {
+    return header;
+}
+
+void Request::setMethod(const RequestMethod &method) {
     this->method = method;
 }
 
@@ -30,8 +34,12 @@ void Request::setPath(const std::string &path) {
     this->path = path;
 }
 
-void Request::setHeader(net::http::HttpHeader *header) {
-    this->header = header;
+string *Request::getUriPattern() const {
+    return uriPattern;
+}
+
+void Request::setUriPattern(string *uriPattern) {
+    Request::uriPattern = uriPattern;
 }
 
 RequestMethod Request::getRequestMethodFromString(const std::string &val) {
@@ -40,6 +48,8 @@ RequestMethod Request::getRequestMethodFromString(const std::string &val) {
     if ("PUT" == val) return RequestMethod::PUT;
     if ("DELETE" == val) return RequestMethod::DELETE;
     if ("HEAD" == val) return RequestMethod::HEAD;
+
+    throw HttpServerException("Unexpected request method!");
 }
 
 void Request::parseHttpStatusLine(Request &request, std::istringstream &f) {
@@ -66,7 +76,7 @@ void Request::parseHeaderLine(Request &request, const std::string &headerLine) {
     std::istringstream issHeaderVals(values);
     std::string valLine;
     while (getline(issHeaderVals, valLine, ','))
-        request.Header()->Add(name, valLine);
+        request.Header().Add(name, valLine);
 }
 
 void Request::parseHttpHeadersLines(Request &request, std::istringstream &f) {

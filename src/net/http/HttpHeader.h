@@ -12,17 +12,19 @@
 
 namespace net {
     namespace http {
+        using namespace std;
+
         class HttpHeader {
         private:
-            std::map<std::string, std::vector<std::string>> headers;
+            map<string, vector<string>> headers;
         public:
-            void Add(const std::string &key, const std::string &value);
+            void Add(const string &key, const string &value);
 
-            void Del(const std::string &key);
+            void Del(const string &key);
 
-            std::string Get(const std::string &key);
+            string Get(const string &key);
 
-            void Set(const std::string &key, const std::string &value);
+            void Set(const string &key, const string &value);
         };
     }
 }

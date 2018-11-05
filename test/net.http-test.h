@@ -2,8 +2,9 @@
 #define NET_HTTP_TEST_H
 
 #include <gtest/gtest.h>
-#include "../src/net.http.h"
-#include "../src/Request.h"
+
+#include "net/http/common.h"
+#include "net/http/Request.h"
 
 using namespace net;
 
@@ -18,14 +19,16 @@ TEST(net_http_Server_parseRequest, positive) {
         "Host: www.wildfowl.org\r\n"
     );
     ASSERT_EQ("/wildfowl", req.RequestURI());
-    ASSERT_EQ("www.wildfowl.org", req.Header()->Get("Host"));
+    ASSERT_EQ("www.wildfowl.org", req.Header().Get("Host"));
 }
 
 TEST(net_http_Router__getUriRegexPatter, positive) {
-    ASSERT_EQ("/some/fantastic/([\\w]+)/profile", http::Router::getUriRegexPatter("/some/fantastic/{username}/profile"));
-    ASSERT_EQ("/", http::Router::getUriRegexPatter("/"));
-    ASSERT_EQ("/some/url/id-([\\w]+)", http::Router::getUriRegexPatter("/some/url/id-{someId}"));
+    ASSERT_EQ("/some/fantastic/([\\w]+)/profile", getUriRegexPatter("/some/fantastic/{username}/profile"));
+    ASSERT_EQ("/", getUriRegexPatter("/"));
+    ASSERT_EQ("/some/url/id-([\\w]+)", getUriRegexPatter("/some/url/id-{someId}"));
     //ASSERT_EQ("/", http::Request::getUriRegexPatter());
 }
+
+
 
 #endif //NET_HTTP_TEST_H
